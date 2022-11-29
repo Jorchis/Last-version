@@ -1,11 +1,15 @@
-﻿@model IEnumerable<JWST_PWEB.Models.importantFacts>
+@model IEnumerable<JWST_PWEB.Models.importantFacts>
+    @using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+    /*@model JWST_PWEB.Models.importantFacts*/
 
 
 <div class="col-3 aside">
     <br>
     <h2 class="aside-title">Datos reelevantes</h2>
     <br>
-    <a asp-action="Create">Create New</a>
+    <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNew">Create New</a>
     <div class="row">
         @foreach (var item in Model)
         {
@@ -16,14 +20,98 @@
                     <p class="card-text">
                         @Html.DisplayFor(modelItem => item.IFText)
                     </p>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-@Html.DisplayFor(modelItem => item.Id)" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" onclick="deleteCard()"/>
+    </form>
                 </div>
             </div>
+
+<div class="modal fade" id="edit-@Html.DisplayFor(modelItem => item.Id)" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Editar elemento con Id = @Html.DisplayFor(modelItem => item.Id)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="IFTitle" class="control-label"></label>
+                <input asp-for="IFTitle" class="form-control" />
+                <span asp-validation-for="IFTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IFText" class="control-label"></label>
+                <input asp-for="IFText" class="form-control" />
+                <span asp-validation-for="IFText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pictureURL" class="control-label"></label>
+                <input asp-for="pictureURL" class="form-control" />
+                <span asp-validation-for="pictureURL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         }
     </div>
     <br>
+
+<div class="modal fade" id="addNew" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Crear nuevo elemento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IFTitle" class="control-label"></label>
+                <input asp-for="IFTitle" class="form-control" />
+                <span asp-validation-for="IFTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IFText" class="control-label"></label>
+                <input asp-for="IFText" class="form-control" />
+                <span asp-validation-for="IFText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pictureURL" class="control-label"></label>
+                <input asp-for="pictureURL" class="form-control" />
+                <span asp-validation-for="pictureURL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="userID" class="control-label"></label>
+                <input asp-for="userID" class="form-control" value=@UserManager.GetUserId(User) disabled>
+                <span asp-validation-for="userID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 
