@@ -1,0 +1,30 @@
+﻿@model IEnumerable<JWST_PWEB.Models.importantFacts>
+
+
+<div class="col-3 aside">
+    <br>
+    <h2 class="aside-title">Datos reelevantes</h2>
+    <br>
+    <a asp-action="Create">Create New</a>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="@Html.DisplayFor(modelItem => item.pictureURL)" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.IFTitle)</h5>
+                    <p class="card-text">
+                        @Html.DisplayFor(modelItem => item.IFText)
+                    </p>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </div>
+            </div>
+        }
+    </div>
+    <br>
+</div>
+
+
+
